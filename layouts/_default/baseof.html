@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ block "title" . }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ "css/glass.css" | relURL }}">
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-nav">
+        <div class="site-brand">{{ .Site.Title }}</div>
+        <nav>
+          <ul class="site-menu">
+            {{ range .Site.Menus.main }}
+              <li>
+                <a href="{{ .URL }}" {{ if $.IsMenuCurrent "main" . }}aria-current="page"{{ end }}>
+                  {{ .Name }}
+                </a>
+              </li>
+            {{ end }}
+          </ul>
+        </nav>
+      </header>
+
+      <main class="site-main">
+        <section class="glass-card">
+          {{ block "main" . }}{{ end }}
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

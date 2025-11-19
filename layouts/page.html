@@ -7,4 +7,14 @@
 
   {{ .Content }}
   {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+  {{ if eq .Section "posts" }}
+    <nav class="post-nav-fab" aria-label="Post navigation">
+      {{ with .PrevInSection }}
+        <a class="post-nav-btn post-nav-prev" href="{{ .RelPermalink }}" aria-label="Previous post">&#8592;</a>
+      {{ end }}
+      {{ with .NextInSection }}
+        <a class="post-nav-btn post-nav-next" href="{{ .RelPermalink }}" aria-label="Next post">&#8594;</a>
+      {{ end }}
+    </nav>
+  {{ end }}
 {{ end }}
