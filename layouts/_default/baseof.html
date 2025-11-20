@@ -17,7 +17,7 @@
           <ul class="site-menu">
             {{ range .Site.Menus.main }}
               <li>
-                <a href="{{ .URL }}" {{ if $.IsMenuCurrent "main" . }}aria-current="page"{{ end }}>
+                <a href="{{ .URL | relLangURL }}" {{ if $.IsMenuCurrent "main" . }}aria-current="page"{{ end }}>
                   {{ .Name }}
                 </a>
               </li>
