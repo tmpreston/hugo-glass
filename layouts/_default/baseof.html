@@ -23,6 +23,20 @@
             {{ end }}
           </ul>
         </nav>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme">
+          <!-- https://icon-sets.iconify.design/bitcoin-icons/sun-filled/ -->
+          <svg class="theme-icon theme-icon-sun" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+	          <path fill="currentColor" d="M12 16.5A4.505 4.505 0 0 1 7.5 12c0-2.481 2.019-4.5 4.5-4.5s4.5 2.019 4.5 4.5s-2.019 4.5-4.5 4.5" />
+	          <path fill="currentColor" fill-rule="evenodd" d="M12 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 12 3m6 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5M3 12a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 3 12m9 6a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2a.5.5 0 0 1 .5-.5m6.354-12.354a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708-.708l1.5-1.5a.5.5 0 0 1 .708 0m-10.5 10.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708-.708l1.5-1.5a.5.5 0 0 1 .708 0m-2.208-10.5a.5.5 0 0 1 .708 0l1.5 1.5a.5.5 0 1 1-.708.708l-1.5-1.5a.5.5 0 0 1 0-.708m10.5 10.5a.5.5 0 0 1 .708 0l1.5 1.5a.5.5 0 0 1-.708.708l-1.5-1.5a.5.5 0 0 1 0-.708" clip-rule="evenodd" />
+          </svg>
+          <!-- https://icon-sets.iconify.design/bitcoin-icons/moon -->
+          <svg class="theme-icon theme-icon-moon"  width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+             <g fill="none" stroke="currentColor" stroke-width="1">
+              <path d="M20.434 13.934a6.5 6.5 0 0 1-7.367-7.367A6.501 6.501 0 0 0 14 19.5a6.5 6.5 0 0 0 6.433-5.566Z"/>
+              <path stroke-linecap="round" d="M4.5 8.75v1.5m.75-.75h-1.5m3.75-6v2m1-1h-2"/>
+            </g>
+          </svg>
+        </button>
       </header>
 
       <main class="site-main">
@@ -33,12 +47,83 @@
     </div>
     <script>
       (function () {
-        var header = document.querySelector('.site-nav');
-        if (!header) return;
-        header.addEventListener('click', function (e) {
-          if (e.target.closest('a, button')) return;
-          window.location.href = '{{ .Site.BaseURL }}';
-        });
+        var THEME_KEY = 'theme';
+
+        function getSystemPrefersDark() {
+          return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+
+        function applyTheme(theme) {
+          var root = document.documentElement;
+          if (!root) return;
+
+          if (theme === 'light' || theme === 'dark') {
+            root.setAttribute('data-theme', theme);
+          } else {
+            root.removeAttribute('data-theme');
+          }
+
+          var toggle = document.getElementById('theme-toggle');
+          if (!toggle) return;
+          var effectiveTheme = theme;
+          if (!effectiveTheme) {
+            effectiveTheme = getSystemPrefersDark() ? 'dark' : 'light';
+          }
+          toggle.setAttribute('data-mode', effectiveTheme);
+          toggle.setAttribute('aria-pressed', effectiveTheme === 'dark');
+        }
+
+        function initTheme() {
+          var stored = null;
+          try {
+            stored = window.localStorage.getItem(THEME_KEY);
+          } catch (e) {}
+
+          if (stored === 'light' || stored === 'dark') {
+            // User has explicitly chosen a theme; always respect it.
+            applyTheme(stored);
+          } else {
+            // No stored preference: start from system preference without persisting.
+            applyTheme(null);
+          }
+
+          var toggle = document.getElementById('theme-toggle');
+          if (toggle) {
+            toggle.addEventListener('click', function (e) {
+              e.stopPropagation();
+              var current;
+              try {
+                current = window.localStorage.getItem(THEME_KEY);
+              } catch (err) {}
+
+              var effective = current;
+              if (effective !== 'light' && effective !== 'dark') {
+                // If nothing stored yet, derive the current effective theme from system.
+                effective = getSystemPrefersDark() ? 'dark' : 'light';
+              }
+
+              var next = effective === 'dark' ? 'light' : 'dark';
+
+              try {
+                window.localStorage.setItem(THEME_KEY, next);
+              } catch (e2) {}
+
+              applyTheme(next);
+            });
+          }
+        }
+
+        function initHeaderNav() {
+          var header = document.querySelector('.site-nav');
+          if (!header) return;
+          header.addEventListener('click', function (e) {
+            if (e.target.closest('a, button')) return;
+            window.location.href = '{{ .Site.BaseURL }}';
+          });
+        }
+
+        initTheme();
+        initHeaderNav();
       })();
     </script>
   </body>
