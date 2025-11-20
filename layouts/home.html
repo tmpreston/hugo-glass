@@ -1,9 +1,10 @@
 {{ define "main" }}
+  {{ $excerptLen := default 350 .Site.Params.excerptLength }}
   {{ .Content }}
   {{ range site.RegularPages }}
     <section class="glass-card">
       <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-      {{ .Summary }}
+      <p>{{ .Summary | plainify | truncate $excerptLen }}</p>
     </section>
   {{ end }}
 {{ end }}
