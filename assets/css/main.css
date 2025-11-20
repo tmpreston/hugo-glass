@@ -368,12 +368,11 @@ p {
 }
 
 .post-nav-fab {
-  position: fixed;
-  left: 50%;
-  bottom: 2.25rem;
-  transform: translateX(-50%);
+  position: sticky;
+  left: 90%;
+  bottom: 3vw;
+  z-index: 99999;
   display: inline-flex;
-  align-items: center;
   gap: var(--space-sm);
   padding: 0.45rem 0.6rem;
   border-radius: var(--radius-pill);
@@ -443,7 +442,8 @@ p {
 
 @media (max-width: 640px) {
   .post-nav-fab {
-    bottom: 1.5rem;
+    /* Keep above mobile browser chrome / safe area on iOS */
+    bottom: max(1.25rem, env(safe-area-inset-bottom) + 0.75rem);
     padding: 0.4rem 0.55rem;
   }
 
