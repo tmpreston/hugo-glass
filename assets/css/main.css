@@ -283,8 +283,9 @@ h4 {
 }
 
 p {
-  margin: 0 0 var(--space-md);
+  margin: 0 0 calc(var(--space-md) * 1.1);
   color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 /* Content elements inside the main panel */
@@ -292,6 +293,10 @@ p {
   max-width: 100%;
   height: auto;
   display: block;
+  /* Add comfortable vertical spacing around images */
+  margin-block: var(--space-lg);
+  /* Slight rounding to match iOS-style aesthetics */
+  border-radius: 8px;
 }
 
 .glass-card blockquote {
@@ -304,13 +309,12 @@ p {
   position: relative;
 }
 
-.glass-card blockquote::before {
-  content: "\201C";
-  position: absolute;
-  top: -0.75rem;
-  left: 1.25rem;
-  font-size: 2.5rem;
-  color: rgba(148, 163, 184, 0.6);
+/* Extra spacing when an image follows a heading inside a glass card */
+.glass-card h1 + img,
+.glass-card h2 + img,
+.glass-card h3 + img {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .glass-card blockquote p {
