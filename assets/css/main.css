@@ -441,6 +441,15 @@ p {
 }
 
 @media (max-width: 640px) {
+  .site-shell {
+    padding: var(--space-sm);
+  }
+
+  .glass-card {
+    margin: var(--space-sm) auto;
+    padding: var(--space-sm);
+  }
+
   .post-nav-fab {
     /* Keep above mobile browser chrome / safe area on iOS */
     bottom: max(1.25rem, env(safe-area-inset-bottom) + 0.75rem);
@@ -451,5 +460,9 @@ p {
     width: 2rem;
     height: 2rem;
     font-size: 1rem;
+  }
+
+  p {
+    margin-bottom: var(--space-sm);
   }
 }
