@@ -9,7 +9,9 @@
   <body>
     <div class="site-shell">
       <header class="site-nav">
-        <div class="site-brand">{{ .Site.Title }}</div>
+        <div class="site-brand">
+          <a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+        </div>
         <nav>
           <ul class="site-menu">
             {{ range .Site.Menus.main }}
@@ -29,5 +31,15 @@
         </section>
       </main>
     </div>
+    <script>
+      (function () {
+        var header = document.querySelector('.site-nav');
+        if (!header) return;
+        header.addEventListener('click', function (e) {
+          if (e.target.closest('a, button')) return;
+          window.location.href = '{{ .Site.BaseURL }}';
+        });
+      })();
+    </script>
   </body>
 </html>
