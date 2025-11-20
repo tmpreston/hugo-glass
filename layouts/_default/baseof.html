@@ -41,9 +41,13 @@
       </header>
 
       <main class="site-main">
-        <section class="glass-card">
+        {{ if or .IsHome (and (eq .Kind "section") (eq .Section "posts")) }}
           {{ block "main" . }}{{ end }}
-        </section>
+        {{ else }}
+          <section class="glass-card">
+            {{ block "main" . }}{{ end }}
+          </section>
+        {{ end }}
       </main>
     </div>
   </body>
