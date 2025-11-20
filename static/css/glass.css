@@ -65,7 +65,7 @@ body {
 
 .glass-card {
   width: 100%;
-  max-width: 960px;
+  max-width: 1120px;
   margin: var(--space-lg) auto;
   padding: var(--space-xl);
   border-radius: var(--radius-large);
@@ -145,6 +145,24 @@ h4 {
 p {
   margin: 0 0 var(--space-md);
   color: var(--text-secondary);
+}
+
+/* Content elements inside the main panel */
+.glass-card img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.glass-card pre,
+.glass-card code,
+.glass-card .highlight,
+.glass-card .highlight pre,
+.glass-card .highlight code {
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: visible;
 }
 
 .btn-primary {
