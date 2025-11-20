@@ -1,10 +1,20 @@
 {{ define "main" }}
   {{ $excerptLen := default 350 .Site.Params.excerptLength }}
   {{ .Content }}
-  {{ range site.RegularPages }}
+
+  {{ $recentCount := default 4 .Site.Params.recentPostsCount }}
+  {{ $posts := first $recentCount (where site.RegularPages "Type" "posts") }}
+
+  {{ range $posts }}
     <section class="glass-card">
       <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
       <p>{{ .Summary | plainify | truncate $excerptLen }}</p>
     </section>
   {{ end }}
+
+  <section class="glass-card">
+    <p style="text-align: center; margin: 0;">
+      <a class="btn-primary" href="{{ "/posts/" | relURL }}">All Posts</a>
+    </p>
+  </section>
 {{ end }}
